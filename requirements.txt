@@ -4,3 +4,7 @@ streamlit_option_menu
 openai
 sqlalchemy
 gtts
+beautifulsoup4
+llama_index
+langchain-openai
+langchain-community
