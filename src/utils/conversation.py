@@ -7,6 +7,10 @@ from streamlit_chat import message
 from sqlalchemy.exc import InvalidRequestError
 from io import BytesIO
 from gtts import gTTS, gTTSError
+from llama_index.chat_engine.context import ContextChatEngine
+from llama_index.llms import OpenAI
+from llama_index.llms.base import ChatMessage
+from llama_index.memory import ChatMemoryBuffer
 
 
 def create_gpt_completion(ai_model: str, messages: List[dict]):
@@ -49,7 +53,7 @@ def show_gpt_conversation() -> None:
         if ai_content:
             show_chat(ai_content, st.session_state.user_text)
             st.divider()
-            #show_audio_player(ai_content)
+            # show_audio_player(ai_content)
     except InvalidRequestError as err:
         if err.code == "context_length_excedeed":
             st.session_state.messages.pop(1)
@@ -73,7 +77,7 @@ def show_conversation() -> None:
 
     :return: None
     """
-    if st.session_state.messages:
+    if st.session_state.messages and st.session_state.user_text != '':
         st.session_state.messages.append({'role': 'user', 'content': st.session_state.user_text})
     else:
         ai_role = f"{st.session_state.locale.ai_role_prefix} {st.session_state.role}. {st.session_state.locale.ai_role_postfix}"  # NOQA: E501
@@ -84,6 +88,33 @@ def show_conversation() -> None:
     # if there is a previous conversation, show it
     if [message for message in st.session_state.messages if message['role'] == 'user' and message['content'] != '']:
         show_gpt_conversation()
+
+
+def llama_conversation(index):
+    memory = ChatMemoryBuffer.from_defaults(token_limit=10000)
+
+    chat_engine = index.as_chat_engine(
+        chat_mode="context",
+        memory=memory,
+        system_prompt=(
+            "You are a chatbot, able to have normal interactions, as well as talk"
+            " about an essay discussing Paul Grahams life."
+        ),
+    )
+    # Use the chat method
+    if st.session_state.user_text and st.session_state.user_text != '':
+        chat_message = ChatMessage(role="user", content=st.session_state.user_text)
+        response = chat_engine.chat(st.session_state.user_text, chat_history=st.session_state.chat_messages)
+        st.session_state.chat_messages.append(chat_message)
+
+        st.session_state.messages = [
+            {"role": "system", "content": response},
+            {"role": "user", "content": st.session_state.user_text},
+        ]
+
+        show_chat(response, st.session_state.user_text)
+        st.divider()
+
 
 
 def show_audio_player(ai_content: str) -> None:
