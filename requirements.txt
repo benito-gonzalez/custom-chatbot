@@ -1,0 +1,6 @@
+streamlit
+streamlit-chat
+streamlit_option_menu
+openai
+sqlalchemy
+gtts
