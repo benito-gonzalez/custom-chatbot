@@ -1,6 +1,6 @@
 from streamlit_option_menu import option_menu
 from src.utils.locales import en, es
-from src.utils.conversation import show_conversation, llama_conversation
+from src.utils.conversation import llama_conversation
 from src.utils.helpers import show_chat_buttons, show_text_input
 from src.utils.rag import init_rag, load_indexes
 import streamlit as st
@@ -43,14 +43,14 @@ if "chat_messages" not in st.session_state:
 
 
 def main() -> None:
-    #index = init_rag()
+    # index = init_rag()
 
     index = load_indexes()
-    #query_engine = index.as_query_engine()
+    # query_engine = index.as_query_engine()
     query = "cuándo va a presentar red bull el nuevo RB20?"
-    #response = query_engine.query(query)
-    #print(query)
-    #print(response)
+    # response = query_engine.query(query)
+    # print(query)
+    # print(response)
 
     with st.sidebar:
         c1, c2 = st.columns(2)
@@ -69,8 +69,6 @@ def main() -> None:
                 case st.session_state.locale.radio_text2:
                     c2.text_input(label=st.session_state.locale.select_placeholder3, key="role")
 
-
-    #show_conversation()
     llama_conversation(index)
     st.session_state.user_text = ""
     show_text_input()
