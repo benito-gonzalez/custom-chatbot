@@ -7,7 +7,6 @@ from llama_index import (
 )
 from llama_index.llms import OpenAI
 
-from langchain_openai import ChatOpenAI
 import streamlit as st
 import openai
 import os
