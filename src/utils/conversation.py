@@ -40,6 +40,9 @@ def llama_conversation(index):
 
     show_chat_formatted(st.session_state.past, st.session_state.generated)
     st.divider()
+    if st.session_state.generated:
+        if st.checkbox(st.session_state.locale.audio_player_checkbox):
+            show_audio_player(st.session_state.generated[-1].response)
 
 
 def show_audio_player(ai_content: str) -> None:

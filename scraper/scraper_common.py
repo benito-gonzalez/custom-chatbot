@@ -38,6 +38,10 @@ def as_scraper(topic: Topics, url: str):
             response = requests.get(url_article)
             soup = bs4.BeautifulSoup(response.content, 'html.parser')
 
+            if soup.find('div', attrs={'class': 'futbolisimos'}):
+                continue
+
             body = soup.find('div', attrs={'class': 'art__m-cnt'})
             print(title)
-            create_document(topic, title, body.get_text())
+            if body:
+                create_document(topic, title, body.get_text())

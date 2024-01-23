@@ -6,3 +6,4 @@ gtts~=2.5.0
 beautifulsoup4~=4.12.3
 llama_index
 requests~=2.31.0
+httpx
