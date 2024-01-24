@@ -27,6 +27,7 @@ def create_document(topic: Topics, title: str, content: str):
     if not os.path.exists(dir):
         os.makedirs(dir)
     path = os.path.join(dir, title)
+    print(title)
     with open(path, 'w') as archivo:
         archivo.write(content)
 

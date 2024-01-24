@@ -42,6 +42,5 @@ def as_scraper(topic: Topics, url: str):
                 continue
 
             body = soup.find('div', attrs={'class': 'art__m-cnt'})
-            print(title)
             if body:
                 create_document(topic, title, body.get_text())
