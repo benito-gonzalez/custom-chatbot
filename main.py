@@ -27,7 +27,7 @@ if "user_text" not in st.session_state:
 if "chat_messages" not in st.session_state:
     st.session_state.chat_messages = []
 if "selected_role" not in st.session_state:
-    st.session_state.selected_role = "f1"
+    st.session_state.selected_role = Topics.F1
 
 with st.sidebar:
     selected_lang = option_menu(
@@ -44,9 +44,18 @@ def main() -> None:
     print("Entramos en main")
 
     with st.sidebar:
-        selected_role = st.selectbox(label=st.session_state.locale.select_placeholder,
-                                     key="role",
-                                     options=st.session_state.locale.ai_role_options)
+        selected_role = option_menu(
+            menu_title=st.session_state.locale.select_placeholder,
+            options=st.session_state.locale.ai_role_options,
+            icons=["car-front-fill", "globe", "circle"],
+            menu_icon="cast",
+            default_index=0,
+            orientation="vertical",
+            styles={
+                "nav-link": {"--hover-color": "#eee"},
+            }
+        )
+
     match selected_role:
         case "F1":
             st.session_state.selected_role = Topics.F1
@@ -63,7 +72,7 @@ def main() -> None:
 
     index = load_indexes(st.session_state.selected_role)
 
-    llama_conversation(index)
+    llama_conversation(st.session_state.selected_role, index)
     st.session_state.user_text = ""
     show_text_input()
     show_chat_buttons()

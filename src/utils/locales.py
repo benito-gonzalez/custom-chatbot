@@ -18,6 +18,7 @@ class Locale:
     stt_placeholder: str
     audio_player_checkbox: str
 
+
 AI_ROLE_OPTIONS_EN = [
     "F1",
     "NBA",
@@ -32,7 +33,7 @@ AI_ROLE_OPTIONS_ES = [
 
 en = Locale(
     ai_role_options=AI_ROLE_OPTIONS_EN,
-    ai_role_prefix="You are an expert ",
+    ai_role_prefix="You are a chatbot, able to have normal interactions, as well as an expert in ",
     ai_role_postfix="Answer as concisely as possible.",
     title="Welcome to your expert in ",
     language="English",
@@ -41,14 +42,14 @@ en = Locale(
     chat_run_btn="Ask",
     chat_clear_btn="Clear",
     chat_save_btn="Save",
-    select_placeholder="Select your expert role in",
+    select_placeholder="Select your expert",
     stt_placeholder="To Hear The Voice Of AI Press Play",
     audio_player_checkbox="Show audio player"
 )
 
 es = Locale(
     ai_role_options=AI_ROLE_OPTIONS_ES,
-    ai_role_prefix="Eres un experto",
+    ai_role_prefix="Eres un chatbot capacitado para tener conversaciones normales y experto en ",
     ai_role_postfix="Responde de la manera más concisa posible.",
     title="Bienvenido a tu experto en ",
     language="Español",
@@ -57,7 +58,7 @@ es = Locale(
     chat_run_btn="Preguntar",
     chat_clear_btn="Limpiar",
     chat_save_btn="Guardar",
-    select_placeholder="Selecciona tu rol experto en",
+    select_placeholder="Selecciona a tu experto",
     stt_placeholder="Para escuchar la voz de la IA, presiona Reproducir",
     audio_player_checkbox="Mostrar reproductor de audio"
 

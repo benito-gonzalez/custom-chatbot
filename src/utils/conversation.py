@@ -15,15 +15,14 @@ def show_chat_formatted(past, generated) -> None:
             message(generated[i].response, key=f"{i}")
 
 
-def llama_conversation(index):
-    memory = ChatMemoryBuffer.from_defaults(token_limit=10000)
+def llama_conversation(topic, index):
+    memory = ChatMemoryBuffer.from_defaults(token_limit=5000)
 
     chat_engine = index.as_chat_engine(
         chat_mode="context",
         memory=memory,
         system_prompt=(
-            "You are a chatbot, able to have normal interactions, as well as talk"
-            " about an essay discussing Paul Grahams life."
+            f"{st.session_state.locale.ai_role_prefix} {topic.value} {st.session_state.locale.ai_role_postfix}"
         ),
     )
     # Use the chat method
