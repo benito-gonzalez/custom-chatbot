@@ -46,7 +46,6 @@ with st.sidebar:
 
 @st.cache_resource
 def initialize_scrapers():
-    print("entra en inicializar scrapers")
     documents_path = os.path.join(PATH, "scraper", "documents")
     if not os.path.exists(documents_path):
         run_all_scrapers()

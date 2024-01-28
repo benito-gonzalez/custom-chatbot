@@ -1,5 +1,5 @@
 .idea/*
-.streamlit/*
+.streamlit/secrets.toml
 src/utils/__pycache__/*
 scraper/__pycache__/*
 scraper/f1/__pycache__/

@@ -10,3 +10,7 @@ def run_all_scrapers():
     as_news_nba()
     marca_football()
     as_news_football()
+
+
+if __name__ == "__main__":
+    run_all_scrapers()
