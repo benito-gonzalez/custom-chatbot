@@ -79,6 +79,8 @@ def main() -> None:
             st.session_state.selected_role = Topics.NBA
         case "Football" | "Futbol":
             st.session_state.selected_role = Topics.FOOTBALL
+        case "Tennis" | "Tenis":
+            st.session_state.selected_role = Topics.TENNIS
         case _:
             st.session_state.selected_role = Topics.F1
 

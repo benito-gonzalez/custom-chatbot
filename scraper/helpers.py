@@ -6,6 +6,7 @@ class Topics(Enum):
     F1 = 'f1'
     FOOTBALL = 'football'
     NBA = 'nba'
+    TENNIS = "tennis"
 
 
 my_path = os.path.abspath(os.path.dirname(__file__))

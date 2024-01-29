@@ -22,13 +22,15 @@ class Locale:
 AI_ROLE_OPTIONS_EN = [
     "F1",
     "NBA",
-    "Football"
+    "Football",
+    "Tennis"
 ]
 
 AI_ROLE_OPTIONS_ES = [
     "F1",
     "NBA",
-    "Futbol"
+    "Futbol",
+    "Tenis"
 ]
 
 en = Locale(
