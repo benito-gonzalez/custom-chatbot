@@ -10,6 +10,11 @@ class Topics(Enum):
     TENNIS = "tennis"
 
 
+class Models(Enum):
+    LLAMA2 = 'llama-2-70b-chat'
+    GPT = 'gpt-3.5-turbo'
+
+
 my_path = os.path.abspath(os.path.dirname(__file__))
 DOCUMENTS_PATH = os.path.join(my_path, "..", "scraper", "documents")
 documents = []

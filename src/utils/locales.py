@@ -14,6 +14,7 @@ class Locale:
     chat_run_btn: str
     chat_clear_btn: str
     chat_save_btn: str
+    select_model_placeholder: str
     select_placeholder: str
     stt_placeholder: str
     audio_player_checkbox: str
@@ -44,6 +45,7 @@ en = Locale(
     chat_run_btn="Ask",
     chat_clear_btn="Clear",
     chat_save_btn="Save",
+    select_model_placeholder="Select your LLM model",
     select_placeholder="Select your expert",
     stt_placeholder="To Hear The Voice Of AI Press Play",
     audio_player_checkbox="Show audio player"
@@ -60,6 +62,7 @@ es = Locale(
     chat_run_btn="Preguntar",
     chat_clear_btn="Limpiar",
     chat_save_btn="Guardar",
+    select_model_placeholder="Selecciona tu modelo de LLM",
     select_placeholder="Selecciona a tu experto",
     stt_placeholder="Para escuchar la voz de la IA, presiona Reproducir",
     audio_player_checkbox="Mostrar reproductor de audio"

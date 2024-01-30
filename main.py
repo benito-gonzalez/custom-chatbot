@@ -5,7 +5,7 @@ from src.utils.locales import en, es
 from src.utils.conversation import llama_conversation
 from src.utils.helpers import show_chat_buttons, show_text_input
 from src.utils.rag import load_indexes, generate_indexes
-from scraper.helpers import Topics
+from scraper.helpers import Topics, Models
 from scraper.run_scrapers import run_all_scrapers
 
 PAGE_TITLE: str = "AI Talks"
@@ -41,6 +41,8 @@ if "chat_messages" not in st.session_state:
     st.session_state.chat_messages = []
 if "selected_role" not in st.session_state:
     st.session_state.selected_role = Topics.F1
+if "selected_model" not in st.session_state:
+    st.session_state.selected_role = Models.LLAMA2
 
 with st.sidebar:
     selected_lang = option_menu(
@@ -49,7 +51,8 @@ with st.sidebar:
         icons=["globe2", "globe"],
         menu_icon="cast",
         default_index=0,
-        orientation="horizontal"
+        orientation="horizontal",
+        styles={"nav-link": {"--hover-color": "#eee"}}
     )
 
 
@@ -67,20 +70,39 @@ def initialize_rag():
         generate_indexes()
 
 
-def main() -> None:
+def get_selected_model():
+    with st.sidebar:
+        selected_model = option_menu(
+            menu_title=st.session_state.locale.select_model_placeholder,
+            options=["llama-2-70b-chat", "gpt-3.5-turbo"],
+            icons=["robot", "robot"],
+            menu_icon="wrench-adjustable",
+            default_index=0,
+            orientation="horizontal",
+            styles={"nav-link": {"--hover-color": "#eee"}}
+        )
+    match selected_model:
+        case "llama-2-70b-chat":
+            selected_model = Models.LLAMA2
+        case "gpt-3.5-turbo":
+            selected_model = Models.GPT
+        case _:
+            selected_model = Models.LLAMA2
+
+    return selected_model
+
+
+def get_selected_role():
     with st.sidebar:
         selected_role = option_menu(
             menu_title=st.session_state.locale.select_placeholder,
             options=st.session_state.locale.ai_role_options,
             icons=["car-front-fill", "globe", "circle"],
-            menu_icon="cast",
+            menu_icon="person-lines-fill",
             default_index=0,
             orientation="vertical",
-            styles={
-                "nav-link": {"--hover-color": "#eee"},
-            }
+            styles={"nav-link": {"--hover-color": "#eee"}}
         )
-
     match selected_role:
         case "F1":
             st.session_state.selected_role = Topics.F1
@@ -93,11 +115,22 @@ def main() -> None:
         case _:
             st.session_state.selected_role = Topics.F1
 
+    return selected_role
+
+
+def display_title(selected_role):
     st.markdown(
         f"<h1 style='text-align: center;'>{st.session_state.locale.title} {selected_role}</h1>",
         unsafe_allow_html=True)
 
-    index = load_indexes(st.session_state.selected_role)
+
+def main() -> None:
+    st.session_state.selected_model = get_selected_model()
+    selected_role = get_selected_role()
+
+    display_title(selected_role)
+
+    index = load_indexes(st.session_state.selected_model, st.session_state.selected_role)
 
     llama_conversation(st.session_state.selected_role, index)
     st.session_state.user_text = ""
