@@ -5,6 +5,7 @@ scraper/__pycache__/*
 scraper/f1/__pycache__/
 scraper/football/__pycache__/
 scraper/nba/__pycache__/
+scraper/tennis/__pycache__/
 scraper/documents/*
 scraper/__init__.py
 scraper/f1/__init__.py

@@ -1,5 +1,6 @@
 import os
 from enum import Enum
+from datetime import datetime
 
 
 class Topics(Enum):
@@ -23,6 +24,10 @@ def get_all_documents(topic: Topics):
         return []
 
 
+def current_date():
+    return datetime.now().strftime("%Y-%m-%d")
+
+
 def create_document(topic: Topics, title: str, content: str):
     dir = os.path.join(DOCUMENTS_PATH, topic.value)
     if not os.path.exists(dir):
@@ -30,11 +35,11 @@ def create_document(topic: Topics, title: str, content: str):
     path = os.path.join(dir, title)
     print(title)
     with open(path, 'w') as archivo:
-        archivo.write(content)
+        archivo.write(current_date() + "\n" + content)
 
 
 def clean_title(title):
     cleaned_string = title.strip()
-    trans_table = str.maketrans({"'": None, '"': None, '“': None, '”': None})
+    trans_table = str.maketrans({"'": None, '"': None, '“': None, '”': None, '‘': None, '’': None, '/': None})
     cleaned_string = cleaned_string.translate(trans_table)
     return cleaned_string
