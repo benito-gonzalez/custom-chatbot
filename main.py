@@ -17,6 +17,15 @@ PATH = os.path.abspath(os.path.dirname(__file__))
 
 st.set_page_config(page_title=PAGE_TITLE, page_icon=PAGE_ICON)
 
+# remove streamlit menu
+hide_streamlit_style = """
+            <style>
+            [data-testid="stToolbar"] {visibility: hidden !important;}
+            footer {visibility: hidden !important;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
 # Store the content
 if "locale" not in st.session_state:
     st.session_state.locale = en

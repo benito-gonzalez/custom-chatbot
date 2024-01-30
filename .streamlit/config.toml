@@ -189,3 +189,9 @@ enableStaticServing = false
 # recommend performing SSL termination by the load balancer or the reverse
 # proxy.']
 # sslKeyFile =
+
+[theme]
+primaryColor="#737175"
+backgroundColor="#f9f9f8"
+secondaryBackgroundColor="#ece6e6"
+textColor="#141414"
