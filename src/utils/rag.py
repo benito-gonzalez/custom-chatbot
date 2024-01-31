@@ -45,7 +45,7 @@ def custom_completion_to_prompt(completion: str) -> str:
     )
 
 
-def generate_indexes():
+def get_service_context(model):
     model_params = {
         Models.GPT: {"model": "gpt-3.5-turbo", "temperature": 0, "max_tokens": 256},
         Models.LLAMA2: {
@@ -58,27 +58,31 @@ def generate_indexes():
             "completion_to_prompt": custom_completion_to_prompt,
             # if using llama 2 for data agents, also override the message representation
             "messages_to_prompt": messages_to_prompt,
-            }
+        }
     }
+    model_params_current = model_params.get(model, {})
+    if model == Models.GPT:
+        llm = OpenAI(**model_params_current)
+        embed_model = OpenAIEmbedding(model="text-embedding-3-small")
+    else:
+        llm = Replicate(**model_params_current)
+        login(st.secrets["hugging_face_token"])
+        embed_model = HuggingFaceBgeEmbeddings(model_name="BAAI/bge-base-en-v1.5")
 
+    service_context = ServiceContext.from_defaults(llm=llm, embed_model=embed_model)
+    set_global_service_context(service_context)
+
+    return service_context
+
+
+def generate_indexes():
     for model in Models:
         if model == Models.LLAMA2:
             continue
         for topic in Topics:
             print(f"Starting the document loading for {topic.value} in {model.value}...")
             documents = SimpleDirectoryReader(os.path.join(DOCUMENTS_PATH, topic.value)).load_data()
-
-            model_params_current = model_params.get(model, {})
-            if model == Models.GPT:
-                llm = OpenAI(**model_params_current)
-                embed_model = OpenAIEmbedding(model="text-embedding-3-small")
-            else:
-                llm = Replicate(**model_params_current)
-                login(st.secrets["hugging_face_token"])
-                embed_model = HuggingFaceBgeEmbeddings(model_name="BAAI/bge-base-en-v1.5")
-
-            service_context = ServiceContext.from_defaults(llm=llm, embed_model=embed_model)
-            set_global_service_context(service_context)
+            service_context = get_service_context(model)
 
             print("Starting the indexing process...")
             index = VectorStoreIndex.from_documents(documents, service_context=service_context)
@@ -91,7 +95,8 @@ def generate_indexes():
 @st.cache_resource
 def load_indexes(model, topic):
     storage_context = StorageContext.from_defaults(persist_dir=os.path.join(STORAGE_PATH, model.value, topic.value))
-    return load_index_from_storage(storage_context)
+    service_context = get_service_context(model)
+    return load_index_from_storage(storage_context, service_context=service_context)
 
 
 if __name__ == "__main__":
