@@ -58,6 +58,7 @@ def get_service_context(model):
             "completion_to_prompt": custom_completion_to_prompt,
             # if using llama 2 for data agents, also override the message representation
             "messages_to_prompt": messages_to_prompt,
+            "is_chat_model": True
         }
     }
     model_params_current = model_params.get(model, {})
@@ -77,8 +78,6 @@ def get_service_context(model):
 
 def generate_indexes():
     for model in Models:
-        if model == Models.LLAMA2:
-            continue
         for topic in Topics:
             print(f"Starting the document loading for {topic.value} in {model.value}...")
             documents = SimpleDirectoryReader(os.path.join(DOCUMENTS_PATH, topic.value)).load_data()

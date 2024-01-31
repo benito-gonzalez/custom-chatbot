@@ -2,7 +2,6 @@ import streamlit as st
 from streamlit_chat import message
 from io import BytesIO
 from gtts import gTTS, gTTSError
-from llama_index.llms.base import ChatMessage
 from llama_index.memory import ChatMemoryBuffer
 
 
@@ -27,9 +26,7 @@ def llama_conversation(topic, index):
     )
     # Use the chat method
     if st.session_state.user_text and st.session_state.user_text != '':
-        chat_message = ChatMessage(role="user", content=st.session_state.user_text)
         response = chat_engine.chat(st.session_state.user_text, chat_history=st.session_state.chat_messages)
-        st.session_state.chat_messages.append(chat_message)
 
         st.session_state.messages.append({"role": "user", "content": st.session_state.user_text})
         st.session_state.messages.append({"role": "system", "content": response})

@@ -13,6 +13,8 @@ PAGE_ICON: str = "🤖"
 LANG_EN: str = "En"
 LANG_ES: str = "Es"
 
+os.environ["REPLICATE_API_TOKEN"] = st.secrets["replicate_token"]
+
 PATH = os.path.abspath(os.path.dirname(__file__))
 
 st.set_page_config(page_title=PAGE_TITLE, page_icon=PAGE_ICON)
