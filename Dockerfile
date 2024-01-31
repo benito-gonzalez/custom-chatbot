@@ -23,8 +23,8 @@ WORKDIR /app
 # Cron job to run scraper/run_scrapers.py at 23:00 every day
 RUN echo "0 23 * * * cd /app && python scraper/run_scrapers.py >> /var/log/scrapers.log 2>&1" > /etc/cron.d/scrapers
 
-# Cron job to run src/utils/rag.py at 23:30 every day
-RUN echo "30 23 * * * cd /app && python src/utils/rag.py >> /var/log/rag.log 2>&1" > /etc/cron.d/rag
+# Cron job to run src/utils/rag.py at 23:30 on Monday, Wednesday and Friday
+RUN echo "30 23 * * 1,3,5 cd /app && python src/utils/rag.py >> /var/log/rag.log 2>&1" > /etc/cron.d/rag
 
 # Provide execute permissions for cron scripts
 RUN chmod 0644 /etc/cron.d/scrapers
