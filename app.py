@@ -3,7 +3,7 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 from src.utils.locales import en, es
 from src.utils.conversation import llama_conversation
-from src.utils.helpers import show_chat_buttons, show_text_input
+from src.utils.helpers import show_chat_buttons, show_text_input, clear_chat, new_form
 from src.utils.rag import load_indexes, generate_indexes
 from scraper.helpers import Topics, Models
 from scraper.run_scrapers import run_all_scrapers
@@ -44,7 +44,7 @@ if "chat_messages" not in st.session_state:
 if "selected_role" not in st.session_state:
     st.session_state.selected_role = Topics.F1
 if "selected_model" not in st.session_state:
-    st.session_state.selected_role = Models.LLAMA2
+    st.session_state.selected_model = Models.LLAMA2
 
 with st.sidebar:
     selected_lang = option_menu(
@@ -91,6 +91,10 @@ def get_selected_model():
         case _:
             selected_model = Models.LLAMA2
 
+    # clean chat history when changing the model
+    if selected_model != st.session_state.selected_model:
+        clear_chat()
+
     return selected_model
 
 
@@ -136,8 +140,9 @@ def main() -> None:
 
     llama_conversation(st.session_state.selected_role, index)
     st.session_state.user_text = ""
-    show_text_input()
-    show_chat_buttons()
+    #show_text_input()
+    # show_chat_buttons()
+    new_form()
 
 
 if __name__ == "__main__":
