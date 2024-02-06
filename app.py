@@ -3,9 +3,9 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 from src.utils.locales import en, es
 from src.utils.conversation import llama_conversation
-from src.utils.helpers import show_chat_buttons, show_text_input, clear_chat, new_form
-from src.utils.rag import load_indexes, generate_indexes
-from scraper.helpers import Topics, Models
+from src.utils.helpers import show_chat_buttons, show_text_input
+from src.utils.index_generator import load_indexes, generate_indexes
+from scraper.helpers import Topics
 from scraper.run_scrapers import run_all_scrapers
 
 PAGE_TITLE: str = "AI Talks"
@@ -43,8 +43,8 @@ if "chat_messages" not in st.session_state:
     st.session_state.chat_messages = []
 if "selected_role" not in st.session_state:
     st.session_state.selected_role = Topics.F1
-if "selected_model" not in st.session_state:
-    st.session_state.selected_model = Models.LLAMA2
+if "selected_text_model" not in st.session_state:
+    st.session_state.selected_text_model = "gpt-3.5-turbo"
 
 with st.sidebar:
     selected_lang = option_menu(
@@ -72,30 +72,17 @@ def initialize_rag():
         generate_indexes()
 
 
-def get_selected_model():
+def show_selected_text_model():
     with st.sidebar:
-        selected_model = option_menu(
-            menu_title=st.session_state.locale.select_model_placeholder,
-            options=["llama-2-70b-chat", "gpt-3.5-turbo"],
+        option_menu(
+            menu_title="LLM",
+            options=["gpt-3.5-turbo"],
             icons=["robot", "robot"],
             menu_icon="wrench-adjustable",
             default_index=0,
             orientation="horizontal",
             styles={"nav-link": {"--hover-color": "#eee"}}
         )
-    match selected_model:
-        case "llama-2-70b-chat":
-            selected_model = Models.LLAMA2
-        case "gpt-3.5-turbo":
-            selected_model = Models.GPT
-        case _:
-            selected_model = Models.LLAMA2
-
-    # clean chat history when changing the model
-    if selected_model != st.session_state.selected_model:
-        clear_chat()
-
-    return selected_model
 
 
 def get_selected_role():
@@ -131,18 +118,17 @@ def display_title(selected_role):
 
 
 def main() -> None:
-    st.session_state.selected_model = get_selected_model()
+    show_selected_text_model()
     selected_role = get_selected_role()
 
     display_title(selected_role)
 
-    index = load_indexes(st.session_state.selected_model, st.session_state.selected_role)
+    index = load_indexes(st.session_state.selected_role)
 
     llama_conversation(st.session_state.selected_role, index)
     st.session_state.user_text = ""
-    #show_text_input()
-    # show_chat_buttons()
-    new_form()
+    show_text_input()
+    show_chat_buttons()
 
 
 if __name__ == "__main__":

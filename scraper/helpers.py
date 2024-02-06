@@ -30,11 +30,11 @@ def get_all_documents(topic: Topics):
 
 
 def current_date():
-    return datetime.now().strftime("%Y-%m-%d")
+    return datetime.now().strftime("%d-%B-%Y")
 
 
 def create_document(topic: Topics, title: str, content: str):
-    dir = os.path.join(DOCUMENTS_PATH, topic.value)
+    dir = os.path.join(DOCUMENTS_PATH, topic.value, "pending")
     if not os.path.exists(dir):
         os.makedirs(dir)
     path = os.path.join(dir, title)
