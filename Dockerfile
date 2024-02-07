@@ -17,9 +17,6 @@ RUN mkdir ~/.streamlit
 RUN cp .streamlit/config.toml ~/.streamlit/config.toml
 RUN cp .streamlit/credentials.toml ~/.streamlit/credentials.toml
 
-# Set the working directory again
-WORKDIR /app
-
 # Cron job to run scraper/run_scrapers.py at 23:00 every day
 RUN echo "0 23 * * * cd /app && python scraper/run_scrapers.py >> /var/log/scrapers.log 2>&1" > /etc/cron.d/scrapers
 
@@ -34,4 +31,4 @@ RUN chmod 0644 /etc/cron.d/rag
 ENTRYPOINT ["streamlit", "run"]
 
 # Default command
-CMD ["main.py"]
+CMD ["app.py"]

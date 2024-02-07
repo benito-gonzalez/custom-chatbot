@@ -1,0 +1,3 @@
+scraper/documents/
+.venv/
+chroma_db/
