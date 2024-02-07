@@ -13,8 +13,6 @@ PAGE_ICON: str = "🤖"
 LANG_EN: str = "En"
 LANG_ES: str = "Es"
 
-os.environ["REPLICATE_API_TOKEN"] = st.secrets["replicate_token"]
-
 PATH = os.path.abspath(os.path.dirname(__file__))
 
 st.set_page_config(page_title=PAGE_TITLE, page_icon=PAGE_ICON)
@@ -120,11 +118,9 @@ def display_title(selected_role):
 def main() -> None:
     show_selected_text_model()
     selected_role = get_selected_role()
-
     display_title(selected_role)
 
     index = load_indexes(st.session_state.selected_role)
-
     llama_conversation(st.session_state.selected_role, index)
     st.session_state.user_text = ""
     show_text_input()

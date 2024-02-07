@@ -22,10 +22,11 @@ documents = []
 
 def get_all_documents(topic: Topics):
     try:
-        dir = os.path.join(DOCUMENTS_PATH, topic.value)
-        return os.listdir(dir)
+        pending_dir = os.path.join(DOCUMENTS_PATH, topic.value, "pending")
+        processed_dir = os.path.join(DOCUMENTS_PATH, topic.value, "processed")
+        return os.listdir(pending_dir) + os.listdir(processed_dir)
     except FileNotFoundError:
-        # Directory will be created in the create_document call
+        # Directory will be created in the create_document() function
         return []
 
 

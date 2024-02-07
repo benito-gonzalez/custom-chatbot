@@ -6,3 +6,4 @@ llama-index==0.9.44
 gTTS~=2.5.1
 openai~=1.10.0
 beautifulsoup4~=4.12.3
+chromadb==0.4.22

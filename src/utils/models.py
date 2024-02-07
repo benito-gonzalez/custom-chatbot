@@ -13,4 +13,4 @@ class TextModelManager:
 
     @staticmethod
     def get_llm():
-        return OpenAI("gpt-3.5-turbo", temperature=0, max_tokens=256)
+        return OpenAI("gpt-3.5-turbo", temperature=0, max_tokens=512)
