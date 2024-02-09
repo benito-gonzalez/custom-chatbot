@@ -5,6 +5,7 @@ COPY . /app
 
 # Set the working directory
 WORKDIR /app
+ENV PYTHONPATH "${PYTHONPATH}:/app"
 
 # Install dependencies
 RUN pip install -r requirements.txt
