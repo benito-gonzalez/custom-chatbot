@@ -16,7 +16,7 @@ from scraper.tennis.tennis_scraper import (marca as marca_tennis,
                                            sport as sport_tennis)
 
 
-def run_all_scrapers():
+def run_scrapers():
     marca_f1()
     as_news_f1()
     mundo_deportivo_f1()
@@ -36,4 +36,4 @@ def run_all_scrapers():
 
 
 if __name__ == "__main__":
-    run_all_scrapers()
+    run_scrapers()

@@ -1,12 +1,11 @@
 import os
 import streamlit as st
 from streamlit_option_menu import option_menu
-from src.utils.locales import en, es
-from src.utils.conversation import llama_conversation
-from src.utils.helpers import show_chat_buttons, show_text_input
-from src.utils.index_generator import load_indexes, generate_indexes
+from src.locales import en, es
+from src.conversation import llama_conversation
+from src.helpers import show_chat_buttons, show_text_input
+from src.index_generator import load_indexes
 from scraper.helpers import Topics
-from scraper.run_scrapers import run_all_scrapers
 
 PAGE_TITLE: str = "AI Talks"
 PAGE_ICON: str = "🤖"
@@ -54,20 +53,6 @@ with st.sidebar:
         orientation="horizontal",
         styles={"nav-link": {"--hover-color": "#eee"}}
     )
-
-
-@st.cache_resource
-def initialize_scrapers():
-    documents_path = os.path.join(PATH, "scraper", "documents")
-    if not os.path.exists(documents_path):
-        run_all_scrapers()
-
-
-@st.cache_resource
-def initialize_rag():
-    index_path = os.path.join(PATH, "storage")
-    if not os.path.exists(index_path):
-        generate_indexes()
 
 
 def show_selected_text_model():
@@ -128,9 +113,6 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    initialize_scrapers()
-    initialize_rag()
-
     match selected_lang:
         case "En":
             st.session_state.locale = en

@@ -1,0 +1,2 @@
+00 07 * * * curl http://api:8000/scrapers
+30 07 * * * curl http://api:8000/vectors

@@ -1,0 +1,33 @@
+version: '3.8'
+
+# Define persistent volumes
+volumes:
+  documents_volume:
+  chroma_db_volume:
+
+services:
+
+  cron:
+    build: 
+      context: ./cron
+      dockerfile: Dockerfile
+    volumes:
+      - ./cron:/app
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: uvicorn src.api:app --reload --host 0.0.0.0
+    volumes:
+      - chroma_db_volume:/app/chroma_db
+      - documents_volume:/app/scraper/documents
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: streamlit run app.py
+    volumes:
+      - documents_volume:/app/scraper/documents
+      - chroma_db_volume:/app/chroma_db

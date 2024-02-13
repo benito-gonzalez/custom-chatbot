@@ -3,7 +3,8 @@ import logging
 import requests
 from scraper.helpers import get_all_documents, clean_title, create_document, Topics
 
-logging.basicConfig(format='%(asctime)s %(levelname)s:%(message)s',
+logging.basicConfig(filename='/var/log/scraper.log',
+                    format='%(asctime)s %(levelname)s:%(message)s',
                     level=logging.INFO)
 
 

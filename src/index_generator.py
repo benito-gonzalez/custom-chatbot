@@ -11,17 +11,18 @@ from typing import List
 from llama_index.vector_stores import ChromaVectorStore
 from llama_index.schema import Document
 from scraper.helpers import Topics
-from src.utils.models import EmbeddingModelManager, TextModelManager
+from src.models import EmbeddingModelManager, TextModelManager
 import streamlit as st
 import openai
 import os
 import shutil
 
-logging.basicConfig(format='%(asctime)s %(levelname)s:%(message)s',
+logging.basicConfig(filename='/var/log/indexes.log',
+                    format='%(asctime)s %(levelname)s:%(message)s',
                     level=logging.INFO)
 
 my_path = os.path.abspath(os.path.dirname(__file__))
-APP_PATH = os.path.join(my_path, "..", "..")
+APP_PATH = os.path.join(my_path, "..")
 DOCUMENTS_PATH = os.path.join(APP_PATH, "scraper", "documents")
 DB_PATH = os.path.join(APP_PATH, "chroma_db")
 
