@@ -28,6 +28,8 @@ services:
       context: .
       dockerfile: Dockerfile
     command: streamlit run app.py
+    ports:
+      - "80:8080"
     volumes:
       - documents_volume:/app/scraper/documents
       - chroma_db_volume:/app/chroma_db

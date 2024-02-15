@@ -126,7 +126,8 @@ cookieSecret = "a-random-key-appears-here"
 # If false, will attempt to open a browser window on start.
 # Default: false unless (1) we are on a Linux box where DISPLAY is unset, or
 # (2) we are running in the Streamlit Atom plugin.
-headless = false
+headless = true
+serverAddress = "0.0.0.0"
 
 # Automatically rerun script when the file is modified on disk.
 # Default: false
@@ -134,7 +135,7 @@ runOnSave = false
 
 # The port where the server will listen for browser connections.
 # Default: 8501
-port = 80
+port = 8080
 
 # The base path for the URL where Streamlit should be served from.
 # Default: ""
