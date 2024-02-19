@@ -1,19 +1,13 @@
 import logging
 import chromadb
-from llama_index import (
-    VectorStoreIndex,
-    SimpleDirectoryReader,
-    ServiceContext,
-    StorageContext,
-    set_global_service_context
-)
-from typing import List
-from llama_index.vector_stores import ChromaVectorStore
-from llama_index.schema import Document
+from llama_index.core import VectorStoreIndex, SimpleDirectoryReader, StorageContext
+from llama_index.core import Settings
+from llama_index.vector_stores.chroma import ChromaVectorStore
+from llama_index.core import Document
 from scraper.helpers import Topics
 from src.models import EmbeddingModelManager, TextModelManager
 import streamlit as st
-import openai
+from typing import List
 import os
 import shutil
 
@@ -27,16 +21,9 @@ DOCUMENTS_PATH = os.path.join(APP_PATH, "scraper", "documents")
 DB_PATH = os.path.join(APP_PATH, "chroma_db")
 
 os.environ['OPENAI_API_KEY'] = st.secrets["api_crendentials"]
-openai.api_key = st.secrets.api_crendentials
 
-
-def get_service_context():
-    embedding_model = EmbeddingModelManager.get_embedding_model()
-    llm = TextModelManager.get_llm()
-    service_context = ServiceContext.from_defaults(llm=llm, embed_model=embedding_model)
-    set_global_service_context(service_context)
-
-    return service_context
+Settings.llm = TextModelManager.get_llm()
+Settings.embed_model = EmbeddingModelManager.get_embedding_model()
 
 
 def check_empty_dir(path: str) -> int:
@@ -77,11 +64,8 @@ def generate_indexes() -> None:
             vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
             storage_context = StorageContext.from_defaults(vector_store=vector_store)
 
-            service_context = get_service_context()
-
             logging.info("Starting the indexing process...")
-            VectorStoreIndex.from_documents(documents, service_context=service_context,
-                                            storage_context=storage_context)
+            VectorStoreIndex.from_documents(documents, storage_context=storage_context)
 
             move_processed_documents(documents, topic)
 
@@ -100,12 +84,8 @@ def load_indexes(topic: Topics) -> VectorStoreIndex:
     vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
     storage_context = StorageContext.from_defaults(vector_store=vector_store)
 
-    service_context = get_service_context()
-
     # load your index from stored vectors
-    index = VectorStoreIndex.from_vector_store(
-        vector_store, storage_context=storage_context, service_context=service_context
-    )
+    index = VectorStoreIndex.from_vector_store(vector_store, storage_context=storage_context)
     return index
 
 

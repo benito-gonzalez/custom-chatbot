@@ -2,7 +2,7 @@ import streamlit as st
 from streamlit_chat import message
 from io import BytesIO
 from gtts import gTTS, gTTSError
-from llama_index.memory import ChatMemoryBuffer
+from llama_index.core.memory import ChatMemoryBuffer
 
 
 def show_chat_formatted(past, generated) -> None:

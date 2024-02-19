@@ -1,5 +1,5 @@
-from llama_index.llms import OpenAI
-from llama_index.embeddings import OpenAIEmbedding
+from llama_index.llms.openai import OpenAI
+from llama_index.embeddings.openai import OpenAIEmbedding
 
 
 class EmbeddingModelManager:
