@@ -1,4 +1,10 @@
 import streamlit as st
+from enum import Enum
+
+
+class ChatInterface(Enum):
+    TRADITIONAL = "traditional"
+    MODERN = "modern"
 
 
 def clear_chat() -> None:
@@ -9,6 +15,7 @@ def clear_chat() -> None:
 
 
 def show_text_input() -> None:
+    st.session_state.user_text = ""
     st.text_area(label=st.session_state.locale.chat_placeholder, value=st.session_state.user_text, key="user_text")
 
 

@@ -15,6 +15,9 @@ class Locale:
     chat_clear_btn: str
     chat_save_btn: str
     select_placeholder: str
+    select_chat_interface: str
+    interface1: str
+    interface2: str
     stt_placeholder: str
     audio_player_checkbox: str
 
@@ -45,6 +48,9 @@ en = Locale(
     chat_clear_btn="Clear",
     chat_save_btn="Save",
     select_placeholder="Select your expert",
+    select_chat_interface="Select the chat interface",
+    interface1="Traditional",
+    interface2="Modern",
     stt_placeholder="To Hear The Voice Of AI Press Play",
     audio_player_checkbox="Show audio player"
 )
@@ -61,6 +67,9 @@ es = Locale(
     chat_clear_btn="Limpiar",
     chat_save_btn="Guardar",
     select_placeholder="Selecciona a tu experto",
+    select_chat_interface="Selecciona la interface del chat",
+    interface1="Tradicional",
+    interface2="Moderna",
     stt_placeholder="Para escuchar la voz de la IA, presiona Reproducir",
     audio_player_checkbox="Mostrar reproductor de audio"
 

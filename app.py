@@ -2,10 +2,11 @@ import os
 import streamlit as st
 from streamlit_option_menu import option_menu
 from src.locales import en, es
-from src.conversation import llama_conversation
-from src.helpers import show_chat_buttons, show_text_input
+from src.conversation import show_chat
+from src.helpers import ChatInterface
 from src.index_generator import load_indexes
 from scraper.helpers import Topics
+
 
 PAGE_TITLE: str = "AI Talks"
 PAGE_ICON: str = "🤖"
@@ -28,20 +29,16 @@ st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 # Store the content
 if "locale" not in st.session_state:
     st.session_state.locale = en
-if "generated" not in st.session_state:
-    st.session_state.generated = []
-if "past" not in st.session_state:
-    st.session_state.past = []
 if "messages" not in st.session_state:
     st.session_state.messages = []
 if "user_text" not in st.session_state:
     st.session_state.user_text = ""
-if "chat_messages" not in st.session_state:
-    st.session_state.chat_messages = []
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
 if "selected_role" not in st.session_state:
     st.session_state.selected_role = Topics.F1
-if "selected_text_model" not in st.session_state:
-    st.session_state.selected_text_model = "gpt-3.5-turbo"
+if "selected_chat_interface" not in st.session_state:
+    st.session_state.selected_chat_interface = st.session_state.locale.interface1
 
 with st.sidebar:
     selected_lang = option_menu(
@@ -53,6 +50,23 @@ with st.sidebar:
         orientation="horizontal",
         styles={"nav-link": {"--hover-color": "#eee"}}
     )
+
+
+def get_selected_chat_interface():
+    with st.sidebar:
+        selected_chat_interface = option_menu(
+            menu_title=st.session_state.locale.select_chat_interface,
+            options=[st.session_state.locale.interface1, st.session_state.locale.interface2],
+            menu_icon=None,
+            default_index=0,
+            orientation="horizontal",
+            styles={"nav-link": {"--hover-color": "#eee"}}
+        )
+        match selected_chat_interface:
+            case st.session_state.locale.interface1:
+                st.session_state.selected_chat_interface = ChatInterface.TRADITIONAL
+            case st.session_state.locale.interface2:
+                st.session_state.selected_chat_interface = ChatInterface.MODERN
 
 
 def show_selected_text_model():
@@ -102,14 +116,12 @@ def display_title(selected_role):
 
 def main() -> None:
     show_selected_text_model()
+    get_selected_chat_interface()
     selected_role = get_selected_role()
     display_title(selected_role)
 
     index = load_indexes(st.session_state.selected_role)
-    llama_conversation(st.session_state.selected_role, index)
-    st.session_state.user_text = ""
-    show_text_input()
-    show_chat_buttons()
+    show_chat(st.session_state.selected_chat_interface, st.session_state.selected_role, index)
 
 
 if __name__ == "__main__":
