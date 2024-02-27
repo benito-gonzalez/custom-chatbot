@@ -25,6 +25,16 @@ hide_streamlit_style = """
             </style>
             """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+st.markdown(
+    f'''
+        <style>
+            .sidebar .sidebar-content {{
+                width: 400px;
+            }}
+        </style>
+    ''',
+    unsafe_allow_html=True
+)
 
 # Store the content
 if "locale" not in st.session_state:
@@ -39,6 +49,8 @@ if "selected_role" not in st.session_state:
     st.session_state.selected_role = Topics.F1
 if "selected_chat_interface" not in st.session_state:
     st.session_state.selected_chat_interface = st.session_state.locale.interface1
+
+
 
 with st.sidebar:
     selected_lang = option_menu(
